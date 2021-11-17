@@ -6,15 +6,24 @@ public class PlayerMove : MonoBehaviour
 {
 
     public Rigidbody rb;
-    public float forwardForce;
+    public Vector3 velocity;
+    Vector3 position;
+    
+    void Update() {
+        position = transform.localPosition;
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        rb.AddForce(forwardForce*Time.deltaTime,0,forwardForce*Time.deltaTime);   
+       if (Input.GetKey("j"))
+            position.x += -velocity.x*Time.deltaTime;
 
-        if (Input.GetKey("s")) {
-            forwardForce = 0;
-        }
+       if (Input.GetKey("l"))
+            position.x += velocity.x*Time.deltaTime;
+        
+        if (Input.GetKey("k"))
+            position.y += velocity.y*Time.deltaTime;
+
+       position.z += velocity.z*Time.deltaTime;
+
+       transform.localPosition = position;
     }
+
 }
