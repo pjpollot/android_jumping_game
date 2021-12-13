@@ -17,9 +17,6 @@ public class PlayerMove : MonoBehaviour
 
        if (Input.GetKey("l"))
             position.x += velocity.x*Time.deltaTime;
-        
-        if (Input.GetKey("k"))
-            position.y += velocity.y*Time.deltaTime;
 
        position.z += velocity.z*Time.deltaTime;
 
