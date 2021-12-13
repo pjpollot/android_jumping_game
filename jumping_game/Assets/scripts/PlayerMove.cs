@@ -10,6 +10,9 @@ public class PlayerMove : MonoBehaviour
     Vector3 position;
     
     void Update() {
+
+        int layerMask = 1 << 8;
+        layerMask = ~layerMask;
         position = transform.localPosition;
 
        if (Input.GetKey("j"))
@@ -18,7 +21,15 @@ public class PlayerMove : MonoBehaviour
        if (Input.GetKey("l"))
             position.x += velocity.x*Time.deltaTime;
 
-       position.z += velocity.z*Time.deltaTime;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down),out hit, 1,layerMask)) {
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
+
+            if (Input.GetKey("i"))
+                    rb.AddForce(0,10,0);
+        }
+
+        position.z += velocity.z*Time.deltaTime;
 
        transform.localPosition = position;
     }
