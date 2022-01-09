@@ -10,8 +10,7 @@ public class PlayerCollision : MonoBehaviour
     void OnCollisionEnter(Collision colInfo) {
 
         if (colInfo.collider.tag == "Obstacles") {
-            Debug.Log("We hit something.");
-            mvmt.enabled = false;
+            FindObjectOfType<GameManager>().EndGame();
         }
     }
 }

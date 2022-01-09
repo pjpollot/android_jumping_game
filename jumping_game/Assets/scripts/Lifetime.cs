@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Lifetime : MonoBehaviour
 {
-    public float timer = 2;
+    float timer = 9;
 
     // Update is called once per frame
     void Update()
