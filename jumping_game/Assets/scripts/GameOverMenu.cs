@@ -5,9 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameOverMenu : MonoBehaviour
-{  
+{
 
-       
     public void TryAgain()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);

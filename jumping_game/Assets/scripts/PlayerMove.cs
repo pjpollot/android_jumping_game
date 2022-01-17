@@ -6,46 +6,69 @@ public class PlayerMove : MonoBehaviour
 {
 
     public Rigidbody rb;
-    Vector3 velocity;
-    Vector3 accelerometerDat;
-    float dirX;
-    float diry;
-    float diryPrevious;
-
-    public float speedZ;
     public float speedX;
+    Vector3 velocity;
+    Vector3 accPos;
+    float teta;
+    float tetaPrevious;
+    float speedZ;
+
     public float jumpThresold;
     public float accelerationY;
     Vector3 position;
 
     void Start()
     {
-        speedZ =  35;
-        accelerometerDat = Vector3.Normalize(Input.acceleration);
+        speedZ = 35;
+        accPos = Input.acceleration;
+        if (accPos.z != 0)
+            tetaPrevious = Mathf.Atan(accPos.y / accPos.z);
+        else
+            tetaPrevious = 0;
+
+    }
+
+    public void Pause()
+    {
+        velocity.x = 0;
+        velocity.y = 0;
+        velocity.z = 0;
+        rb.velocity = velocity;
+
+    }
+
+    public void ReStart()
+    {
+        speedZ = 35;
+        accPos = Input.acceleration;
+        if (accPos.z != 0)
+            tetaPrevious = Mathf.Atan(accPos.y / accPos.z);
+        else
+            tetaPrevious = 0;
     }
 
     void Update() {
 
-        int layerMask = 1 << 8;
-        layerMask = ~layerMask;
 
 
-        diryPrevious = -accelerometerDat.y;
-        accelerometerDat = Vector3.Normalize(Input.acceleration);
-        dirX = accelerometerDat.x;
-        diry = -accelerometerDat.y;
-        
+        accPos = Input.acceleration;
+
+        if (accPos.z != 0)
+            teta = Mathf.Atan(accPos.y / accPos.z);
+        else
+            teta = 0;
 
         velocity = rb.velocity;
-        velocity.x = dirX * speedX * Time.deltaTime;
+        velocity.x = accPos.x * speedX * Time.deltaTime;
         velocity.z = speedZ;
         rb.velocity = velocity;
 
+
+
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down),out hit, 1,layerMask)) {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * hit.distance, Color.yellow);
-            if (diry > jumpThresold) {
-                rb.AddForce(0f, (diry-diryPrevious)/Time.deltaTime, 0f);
+        if (rb.position.y < 1f & rb.position.x < 7.5 & rb.position.x > -7.5) {
+            if ((teta - tetaPrevious)/Time.deltaTime > jumpThresold*Mathf.PI/180) {
+                rb.AddForce(0f, (teta - tetaPrevious)/Time.deltaTime*10, 0f);
             }
         }
 
@@ -55,7 +78,8 @@ public class PlayerMove : MonoBehaviour
         }
         //position.z += velocity.z*Time.deltaTime;
 
-       //transform.localPosition = position;
+        //transform.localPosition = position;
+        tetaPrevious = teta;
     }
 
 }
